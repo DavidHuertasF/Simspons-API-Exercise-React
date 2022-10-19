@@ -29,13 +29,14 @@ function App() {
 
       <div className="cards-container">
         {characters
-          .filter((personaje) => personaje.nombre.includes(filter))
+          .filter((personaje) => personaje.character.includes(filter))
           .map((character, i) => (
             <Card
+              id={i}
               key={i}
-              name={character.nombre}
+              name={character.character}
               image={character.image}
-              quote={character.frase}
+              quote={character.quote}
             />
           ))}
       </div>
