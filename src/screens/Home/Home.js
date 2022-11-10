@@ -2,7 +2,10 @@ import { useState, useEffect } from "react";
 import simpsonsApi from "../../APIrest/simponsApi";
 import Card from "../../components/Home/Card/Card";
 import { useParams } from "react-router-dom";
-import { darkModeContext } from "../../Context/Context";
+// import { darkModeContext } from "../../Context/Context";
+import  CartProvider  from "../../Context/CartContext";
+
+import { cart } from "../../Context/CartContext";
 
 import {
   doc,
@@ -10,7 +13,8 @@ import {
   getFirestore,
   collection,
   getDocs,
-  query, where
+  query,
+  where,
 } from "firebase/firestore";
 
 import "./Home.css";
@@ -42,7 +46,6 @@ function Home() {
 
     // referencia a una colección __________________
 
-
     // const itemsCollectionRef = collection(db, "items");
 
     // getDocs(itemsCollectionRef).then((snapshot) => {
@@ -54,12 +57,11 @@ function Home() {
     // referencia a una colección con filtro __________________
 
     const queryItems = query(collection(db, "items"), where("price", ">", 100));
-    getDocs(queryItems).then(
-      (snapshot) => {
-          snapshot.docs.map((doc) => {
-            console.log(doc.data());
-          });
-        });
+    getDocs(queryItems).then((snapshot) => {
+      snapshot.docs.map((doc) => {
+        console.log(doc.data());
+      });
+    });
     getImages();
   }, []);
 
@@ -75,7 +77,8 @@ function Home() {
       />
 
       <div className="cards-container">
-        <darkModeContext.Provider value={false}>
+        {/* <darkModeContext.Provider value={false}> */}
+        <CartProvider>
           {cat
             ? characters
                 .filter((personaje) => personaje.character.includes(filter))
@@ -102,7 +105,8 @@ function Home() {
                     category={character.category}
                   />
                 ))}
-        </darkModeContext.Provider>
+        </CartProvider>
+        {/* </darkModeContext.Provider> */}
       </div>
     </div>
   );
